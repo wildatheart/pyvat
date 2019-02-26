@@ -135,16 +135,42 @@ class ViesRegistry(Registry):
 
         # Parse the business name and address if possible.
         try:
-            name_node = get_first_child_element(check_vat_response_node,
-                                                'name')
+            name_node = get_first_child_element(
+                check_vat_response_node, 'name')
             result.business_name = get_text(name_node).strip() or None
         except:
             pass
 
         try:
-            address_node = get_first_child_element(check_vat_response_node,
-                                                   'address')
+            address_node = get_first_child_element(
+                check_vat_response_node, 'address')
             result.business_address = get_text(address_node).strip() or None
+        except:
+            pass
+
+        # Parse the resulting country code and vatnr if possible.
+        try:
+            country_result_node = get_first_child_element(
+                check_vat_response_node, 'countryCode')
+            result.country_code_result = get_text(
+                country_result_node).strip() or None
+        except:
+            pass
+
+        try:
+            vatnr_result_node = get_first_child_element(
+                check_vat_response_node, 'vatNumber')
+            result.vat_nr_result = get_text(
+                vatnr_result_node).strip() or None
+        except:
+            pass
+
+        # Parse the request date if possible
+        try:
+            request_date_node = get_first_child_element(
+                check_vat_response_node, 'requestDate')
+            result.request_date = get_text(
+                request_date_node).strip() or None
         except:
             pass
 
